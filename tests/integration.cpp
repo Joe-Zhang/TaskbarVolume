@@ -53,8 +53,10 @@ static int RunTests()
     Check(CreateOverlayWindow(g_hInstance), "create overlay");
     SetOverlayEnabled(false);
     Check(SUCCEEDED(g_endpointVolume->SetMasterVolumeLevelScalar(.50f,nullptr)), "set test baseline");
-    ChangeVolume(1); Check(ReadVolume() == 52, "up one notch adds 2 percent");
-    ChangeVolume(-1); Check(ReadVolume() == 50, "down one notch subtracts 2 percent");
+    ChangeVolume(1); Check(ReadVolume() == 51, "up one notch adds 1 percent");
+    ChangeVolume(1); Check(ReadVolume() == 52, "odd volume increments without snapping");
+    ChangeVolume(-1); Check(ReadVolume() == 51, "down one notch subtracts 1 percent");
+    ChangeVolume(-1); Check(ReadVolume() == 50, "odd volume decrements without snapping");
     ChangeVolume(1000); Check(ReadVolume() == 100, "upper boundary");
     ChangeVolume(-1000); Check(ReadVolume() == 0, "lower boundary");
     BOOL nowMuted = FALSE;
@@ -74,9 +76,9 @@ static int RunTests()
     Check(ReadVolume() == 50 && g_wheelRemainder == 60, "partial wheel does not change volume");
     QueueTaskbarWheel(60);
     Check(ReadVolume() == 50, "hook defers audio work");
-    Pump(20); Check(ReadVolume() == 52, "two partial events form one notch");
+    Pump(20); Check(ReadVolume() == 51, "two partial events form one notch");
     QueueTaskbarWheel(-240);
-    Pump(20); Check(ReadVolume() == 48, "negative multi-notch message keeps sign");
+    Pump(20); Check(ReadVolume() == 49, "negative multi-notch message keeps sign");
     g_notifications->OnDefaultDeviceChanged(eRender, eMultimedia, nullptr);
     Pump(20); Check(g_endpointVolume != nullptr, "device notification rebinds on message loop");
     g_endpointVolume->SetMasterVolumeLevelScalar(original, nullptr);

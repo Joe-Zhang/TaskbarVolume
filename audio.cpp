@@ -112,8 +112,7 @@ void ChangeVolume(int steps)
             return;
     }
     int current = std::clamp(static_cast<int>(std::round(scalar * 100.0f)), 0, 100);
-    int snapped = ((current + 1) / 2) * 2;
-    int next = std::clamp(snapped + std::clamp(steps, -50, 50) * 2, 0, 100);
+    int next = std::clamp(current + std::clamp(steps, -100, 100), 0, 100);
     if (FAILED(g_endpointVolume->SetMasterVolumeLevelScalar(next / 100.0f, nullptr))) return;
     if (next == 0 || steps > 0)
         if (FAILED(g_endpointVolume->SetMute(next == 0, nullptr))) return;
