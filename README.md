@@ -1,4 +1,4 @@
-# TaskbarVolume
+﻿# TaskbarVolume
 
 一个轻量的 Windows 任务栏音量工具：把鼠标放在任务栏上，滚动滚轮即可调整当前默认输出设备的音量。
 
